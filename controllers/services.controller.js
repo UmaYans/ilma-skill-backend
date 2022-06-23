@@ -47,7 +47,7 @@ module.exports.serviceController = {
   getServiceById: async (req, res) => {
     try {
       const servById = await Service.findById(req.params.id);
-      return res.json(AllService);
+      return res.json(servById);
     } catch (error) {
       return res.status(400).json({
         error: "Ошибка при выводе курса по ID: " + error.toString(),
@@ -56,7 +56,7 @@ module.exports.serviceController = {
   },
   getServiceByTag: async (req, res) => {
     try {
-      const servByTag = await Service.find({tag}).includes()
+      const servByTag = await Service.find({}).includes({tag})
       return res.json(servByTag);
     } catch (error) {
       return res.status(400).json({
@@ -65,12 +65,9 @@ module.exports.serviceController = {
     }
   },
   getServiceByAgeFromContent: async (req, res) => {
-    try {
-      
+    try { 
       const age = req.user
-
-      const rangeFrom12 = await Service.find({ content: {$gte: age} });
-      
+      const rangeFrom12 = await Service.find({ content: {$gte: req.user.age} });
       return res.json(AllService);
     } catch (error) {
       return res.status(400).json({
