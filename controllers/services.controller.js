@@ -30,7 +30,7 @@ module.exports.serviceController = {
       return res.json(course);
     } catch (error) {
       return res.status(400).json({
-        error: "Ошибка при создании категорий: " + error.toString(),
+        error: "Ошибка при создании курса: " + error.toString(),
       });
     }
   },
