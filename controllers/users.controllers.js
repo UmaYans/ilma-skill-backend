@@ -6,8 +6,7 @@ require("dotenv").config();
 module.exports.usersController = {
   registerUser: async (req, res) => {
     try {
-      const { firstName, lastName, login, password, telephone, eMail } =
-        req.body;
+      const { firstName, lastName, login, password, phone, eMail,role } = req.body;
       const hash = await bcrypt.hash(
         password,
         Number(process.env.BCRYPT_ROUNDS)
@@ -22,8 +21,9 @@ module.exports.usersController = {
         lastName,
         login,
         password: hash,
-        telephone,
+        phone,
         eMail,
+        role,
       });
 
       return await res.json(user);
