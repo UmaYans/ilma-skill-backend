@@ -28,6 +28,7 @@ module.exports.categoryController = {
     try {
       const cats = await Category.create({
         name: req.body.name,
+        text: req.body.text, 
       });
       return res.json(cats);
     } catch (error) {
