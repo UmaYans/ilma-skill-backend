@@ -2,11 +2,21 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 require("dotenv").config();
+// const { validationResult } = require("express-validator");
 
 module.exports.usersController = {
   registerUser: async (req, res) => {
+    // const errors = validationResult(req);
+
+    // if (!errors.isEmpty()) {
+    //   return res
+    //     .status(400)
+    //     .json({ message: "Ошибка при регистрации", errors });
+    // }
+
     try {
-      const { firstName, lastName, login, password, phone, eMail,role } = req.body;
+      const { firstName, lastName, login,age, password, phone, eMail, role } =
+        req.body;
       const hash = await bcrypt.hash(
         password,
         Number(process.env.BCRYPT_ROUNDS)
@@ -20,6 +30,7 @@ module.exports.usersController = {
         firstName,
         lastName,
         login,
+        age,
         password: hash,
         phone,
         eMail,
@@ -36,6 +47,13 @@ module.exports.usersController = {
 
   login: async (req, res) => {
     try {
+      // const errors = validationResult(req);
+
+      // if (!errors.isEmpty()) {
+      //   return res
+      //     .status(401)
+      //     .json({ message: "Ошибка при авторизации", errors });
+      // }
       const { login, password, eMail } = req.body;
       const candidate = await User.findOne({ login });
 
@@ -77,6 +95,15 @@ module.exports.usersController = {
       return res
         .status(400)
         .json({ error: "Ошибка при выводе пользователя: " + error.toString() });
+    }
+  },
+
+  getUsers: async (req, res) => {
+    try {
+      const users = await User.find();
+      return res.json(users);
+    } catch (error) {
+      return res.json(error);
     }
   },
 };
