@@ -1,6 +1,7 @@
 const { Router } = require("express");
 const { usersController } = require("../controllers/users.controllers");
 const authMiddlewares = require("../middlewares/auth.middlewares");
+const fileMiddleware = require("../middlewares/file.middlewares");
 // const { check } = require("express-validator");
 const router = Router();
 
@@ -34,6 +35,11 @@ router.post(
 );
 router.get("/user", authMiddlewares, usersController.getUserById);
 router.get("/users", usersController.getUsers);
+router.patch(
+  "/avatar/:id",
+  fileMiddleware.single("avatar"),
+  usersController.pathAvatar
+  );
 // router.post("/users", usersController.registerUser);
 // router.post("/login", usersController.login);
 // router.get("/user", authMiddlewares, usersController.getUserById);
