@@ -55,6 +55,7 @@ module.exports.usersController = {
       //     .json({ message: "Ошибка при авторизации", errors });
       // }
       const { login, password, eMail } = req.body;
+      
       const candidate = await User.findOne({ login });
 
       if (!candidate) {

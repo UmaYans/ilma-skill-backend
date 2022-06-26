@@ -1,11 +1,13 @@
+const e = require("express");
 const Service = require("../models/Service.model.js");
+const User = require("../models/User.model.js");
 
 module.exports.serviceController = {
   addService: async (req, res) => {
     const {
       name,
       description,
-      tag,
+      tags,
       photo,
       price,
       oldPrice,
@@ -18,7 +20,7 @@ module.exports.serviceController = {
       const course = await Service.create({
         name,
         description,
-        tag,
+        tags,
         photo,
         price,
         oldPrice,
@@ -50,14 +52,14 @@ module.exports.serviceController = {
       return res.json(servById);
     } catch (error) {
       return res.status(400).json({
-        error: "Ошибка при выводе курса по ID: " + error.toString(),
+        error: "Ошибка прив выводе курса по ID: " + error.message,
       });
     }
   },
   getServiceByTag: async (req, res) => {
     try {
-      const servByTag = await Service.find({}).includes({tag})
-      return res.json(servByTag);
+      const servByTag = await Service.find({ tags: req.body.tags });
+      return await res.json(servByTag);
     } catch (error) {
       return res.status(400).json({
         error: "Ошибка при выводе курса по тегу: " + error.toString(),
@@ -65,13 +67,49 @@ module.exports.serviceController = {
     }
   },
   getServiceByAgeFromContent: async (req, res) => {
-    try { 
-      const age = req.user
-      const rangeFrom12 = await Service.find({ content: {$gte: req.user.age} });
-      return res.json(AllService);
+    try {
+      const age = await req.user.age;
+      const rangeFrom12 = await Service.find({
+        content: { $lte: age },
+      });
+      return res.json(rangeFrom12);
     } catch (error) {
       return res.status(400).json({
-        error: "Ошибка при выводе курса : " + error.toString(),
+        error: "Ошибка при выводе курса c content12: " + error.toString(),
+      });
+    }
+  },
+  getServiceByFormat: async (req, res) => {
+    try {
+      const servByTag = await Service.find({ format: req.body.tag });
+      return res.json(servByTag);
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при выводе курса по формату: " + error.toString(),
+      });
+    }
+  },
+
+  entryCourse: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      const couse = await Service.findById(req.params.id);
+      const cash = user.money - couse.price;
+
+      if (user.money >= couse.price) {
+        await User.findByIdAndUpdate(user, {
+          $push: {
+            myCourses: couse,
+          },
+          money: cash,
+        });
+        return res.json("Kyrs обавлен");
+      } else {
+        return res.json("Недостаточно средств. Пополните баланс.");
+      }
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при записи на курс: " + error.message,
       });
     }
   },

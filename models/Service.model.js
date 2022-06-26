@@ -3,12 +3,13 @@ const mongoose = require("mongoose");
 const serviceSchema = mongoose.Schema({
   name: String,
   description: String,
-  tag: [String],
+  tags: [String],
   photo: String,
   price: Number,
   oldPrice: Number,
   content: Number,
   format: String,
+  rating: Number,
   time: {
     start: Number,
     end: Number

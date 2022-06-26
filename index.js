@@ -8,6 +8,7 @@ const path = require("path");
 const app = express();
 
 app.use(cors());
+app.use("/pages", express.static(path.resolve(__dirname, "pages")));
 app.use(express.json());
 
 app.use(require("./routes"));
