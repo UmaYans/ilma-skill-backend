@@ -1,0 +1,37 @@
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 400px;
+  padding: 14px 0;
+}
+
+.image {
+  width: 100%;
+}
+
+.image img {
+  width: 100%;
+}
+
+.card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+}
+
+.container {
+  padding: 2px 18px;
+}
+
+.price {
+  display: flex;
+  font-size: 20px;
+  font-weight: 700;
+  color: blue;
+}
+
+.price sup {
+  text-decoration: line-through;
+  margin-left: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  color: rgba(3, 3, 3, 0.476);
+}

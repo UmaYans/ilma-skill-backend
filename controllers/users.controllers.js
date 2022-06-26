@@ -37,6 +37,7 @@ module.exports.usersController = {
   login: async (req, res) => {
     try {
       const { login, password, eMail } = req.body;
+      
       const candidate = await User.findOne({ login });
 
       if (!candidate) {

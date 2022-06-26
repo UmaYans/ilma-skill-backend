@@ -9,7 +9,9 @@ module.exports = async (req, res, next) => {
         error: "Нет авторизации",
       });
     }
+
     const [type, token] = authorization.split(" ");
+
     if (type !== "Bearer") {
       return res.status(401).json({
         error: "Неверный тип токена ",
@@ -19,7 +21,7 @@ module.exports = async (req, res, next) => {
     req.user = await jwt.verify(token, process.env.SECRET_JWT_KEY);
 
     next();
-  } catch (error) {
+    } catch (error) {
     return res.status(401).json({
       error: "Ошибка авторизации:" + error.toString(),
     });
