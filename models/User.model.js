@@ -9,6 +9,10 @@ const userSchema = mongoose.Schema({
   photo: String,
   rating: Number,
   password: String,
+  avatar: {
+    type: String,
+    default: "public\\user.png",
+  },
   money: {
     type: Number,
     default: 0,

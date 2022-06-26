@@ -106,4 +106,15 @@ module.exports.usersController = {
       return res.json(error);
     }
   },
+  pathAvatar: async (req, res) => {
+    try {
+      await User.findByIdAndUpdate(req.params.id,  {
+        avatar: req.file.path,
+      });
+      const user = await User.findById(req.params.id);
+      return res.json(user);
+    } catch (error) {
+      return res.json({ error: error.message });
+    }
+  },
 };
