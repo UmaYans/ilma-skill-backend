@@ -18,6 +18,7 @@ module.exports.CommentController = {
     try {
       const postCom = await Comment.create({
         userId: req.user.id,
+        serviceId: req.params.id,
         text: req.body.text,
       });
       return res.json(postCom);
