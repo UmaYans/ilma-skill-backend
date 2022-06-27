@@ -2,20 +2,11 @@ const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
 require("dotenv").config();
-// const { validationResult } = require("express-validator");
 
 module.exports.usersController = {
   registerUser: async (req, res) => {
-    // const errors = validationResult(req);
-
-    // if (!errors.isEmpty()) {
-    //   return res
-    //     .status(400)
-    //     .json({ message: "Ошибка при регистрации", errors });
-    // }
-
     try {
-      const { firstName, lastName, login,age, password, phone, eMail, role } =
+      const { firstName, lastName, login, age, password, phone, eMail, role } =
         req.body;
       const hash = await bcrypt.hash(
         password,
@@ -47,15 +38,8 @@ module.exports.usersController = {
 
   login: async (req, res) => {
     try {
-      // const errors = validationResult(req);
-
-      // if (!errors.isEmpty()) {
-      //   return res
-      //     .status(401)
-      //     .json({ message: "Ошибка при авторизации", errors });
-      // }
       const { login, password, eMail } = req.body;
-      
+
       const candidate = await User.findOne({ login });
 
       if (!candidate) {
@@ -109,7 +93,7 @@ module.exports.usersController = {
   },
   pathAvatar: async (req, res) => {
     try {
-      await User.findByIdAndUpdate(req.params.id,  {
+      await User.findByIdAndUpdate(req.params.id, {
         avatar: req.file.path,
       });
       const user = await User.findById(req.params.id);

@@ -5,7 +5,7 @@ module.exports.CommentController = {
     try {
       const getCom = await Comment.find({
         serviceId: req.params.servId,
-      }).populate("serviceId name");
+      }).populate("serviceId");
       return res.json(getCom);
     } catch (error) {
       return res.status(400).json({
