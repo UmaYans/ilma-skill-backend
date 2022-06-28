@@ -13,7 +13,8 @@ router.post(
 router.get("/user", authMiddlewares, usersController.getUserById);
 router.get("/users", usersController.getUsers);
 router.patch(
-  "/avatar/:id",
+  "/avatar",
+  authMiddlewares,
   fileMiddleware.single("avatar"),
   usersController.pathAvatar
 );

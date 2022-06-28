@@ -93,10 +93,10 @@ module.exports.usersController = {
   },
   pathAvatar: async (req, res) => {
     try {
-      await User.findByIdAndUpdate(req.params.id, {
+      await User.findByIdAndUpdate(req.user.id, {
         avatar: req.file.path,
       });
-      const user = await User.findById(req.params.id);
+      const user = await User.findById(req.user.id);
       return res.json(user);
     } catch (error) {
       return res.json({ error: error.message });
