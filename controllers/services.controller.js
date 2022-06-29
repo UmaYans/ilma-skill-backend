@@ -10,6 +10,7 @@ module.exports.serviceController = {
       tags,
       photo,
       price,
+      teacher,
       oldPrice,
       content,
       format,
@@ -23,6 +24,7 @@ module.exports.serviceController = {
         tags,
         photo,
         price,
+        teacher: req.user.id,
         oldPrice,
         content,
         format,
@@ -36,9 +38,10 @@ module.exports.serviceController = {
       });
     }
   },
+
   getAllServices: async (req, res) => {
     try {
-      const AllService = await Service.find({});
+      const AllService = await Service.find({}).populate("teacher catId")
       return res.json(AllService);
     } catch (error) {
       return res.status(400).json({
@@ -46,9 +49,10 @@ module.exports.serviceController = {
       });
     }
   },
+
   getServiceById: async (req, res) => {
     try {
-      const servById = await Service.findById(req.params.id);
+      const servById = await Service.findById(req.params.id).populate("teacher catId")
       return res.json(servById);
     } catch (error) {
       return res.status(400).json({
@@ -56,9 +60,10 @@ module.exports.serviceController = {
       });
     }
   },
+
   getServiceByTag: async (req, res) => {
     try {
-      const servByTag = await Service.find({ tags: req.body.tags });
+      const servByTag = await Service.find({ tags: req.body.tags }).populate("teacher catId")
       return await res.json(servByTag);
     } catch (error) {
       return res.status(400).json({
@@ -66,12 +71,13 @@ module.exports.serviceController = {
       });
     }
   },
+
   getServiceByAgeFromContent: async (req, res) => {
     try {
       const age = await req.user.age;
       const rangeFrom12 = await Service.find({
         content: { $lte: age },
-      });
+      }).populate("teacher catId")
       return res.json(rangeFrom12);
     } catch (error) {
       return res.status(400).json({
@@ -79,9 +85,10 @@ module.exports.serviceController = {
       });
     }
   },
+
   getServiceByFormat: async (req, res) => {
     try {
-      const servByTag = await Service.find({ format: req.body.tag });
+      const servByTag = await Service.find({ format: req.body.tag }).populate("teacher catId")
       return res.json(servByTag);
     } catch (error) {
       return res.status(400).json({
@@ -102,8 +109,8 @@ module.exports.serviceController = {
             myCourses: couse,
           },
           money: cash,
-        });
-        return res.json("Kyrs обавлен");
+        }).populate("teacher catId")
+        return res.json("Курс добавлен");
       } else {
         return res.json("Недостаточно средств. Пополните баланс.");
       }
