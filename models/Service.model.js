@@ -9,10 +9,14 @@ const serviceSchema = mongoose.Schema({
   oldPrice: Number,
   content: Number,
   format: String,
+  teacher: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "User",
+  },
   rating: Number,
   time: {
     start: Number,
-    end: Number
+    end: Number,
   },
   catId: {
     type: mongoose.SchemaTypes.ObjectId,

@@ -4,7 +4,7 @@ const authMiddlewares = require("../middlewares/auth.middlewares");
 
 const router = Router();
 
-router.post("/service", serviceController.addService);
+router.post("/service",authMiddlewares, serviceController.addService);
 
 router.get("/service", serviceController.getAllServices);
 
