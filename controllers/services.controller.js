@@ -110,15 +110,15 @@ module.exports.serviceController = {
       const cash = user.money - couse.price;
 
       if (user.money >= couse.price) {
-        await User.findByIdAndUpdate(user, {
-          $push: {
+        const us = await User.findByIdAndUpdate(user, {
+         $addToSet: {
             myCourses: couse,
           },
           money: cash,
-        }).populate("teacher catId");
-        return res.json("Курс добавлен");
+        }, {new: true})
+        return res.json(us);
       } else {
-        return res.json("Недостаточно средств. Пополните баланс.");
+        return res.json({error : "Недостаточно средств. Пополните баланс."});
       }
     } catch (error) {
       return res.status(400).json({
@@ -126,4 +126,42 @@ module.exports.serviceController = {
       });
     }
   },
+  
+  saveCorses: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      const couse = await Service.findById(req.params.id);
+
+      const us = await User.findByIdAndUpdate(user, {
+        $addToSet: {
+          saveCourses: couse,
+        },
+      }, {new: true})
+      return res.json(us);
+      
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при сохранении курса: " + error.message,
+      });
+    }
+  }, 
+
+  deleteSaveCourse: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      const couse = await Service.findById(req.params.id);
+
+      const us = await User.findByIdAndUpdate(user, {
+        $pull: {
+          saveCourses: couse,
+        },
+      }, {new: true})
+      return res.json(us);
+      
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при удалении курсА: " + error.message,
+      });
+    }
+  }
 };
