@@ -23,6 +23,12 @@ const userSchema = mongoose.Schema({
       ref: "Service",
     },
   ],
+  saveCourses: [
+    {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Service",
+    },
+  ],
   login: {
     type: String,
     unique: true,

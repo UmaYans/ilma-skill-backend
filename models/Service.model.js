@@ -8,7 +8,7 @@ const serviceSchema = mongoose.Schema({
   price: Number,
   oldPrice: Number,
   content: Number,
-  format: String,
+  format: [String],
   rating: Number,
   time: {
     start: Number,
