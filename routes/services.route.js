@@ -23,5 +23,4 @@ router.post("/service/one/course/entry", serviceController.getServiceByFormat);
 router.post("/service/entry/course/:id/wou", authMiddlewares, serviceController.entryCourse)
 
 
-
 module.exports = router;
