@@ -119,7 +119,7 @@ module.exports.serviceController = {
             money: cash,
           },
           { new: true }
-        ).populate("myCourses")
+        ).populate("myCourses");
         return res.json(us);
       } else {
         return res.json({ error: "Недостаточно средств. Пополните баланс." });
@@ -143,7 +143,7 @@ module.exports.serviceController = {
           },
         },
         { new: true }
-      ).populate("saveCourses")
+      ).populate("saveCourses");
       return res.json(us);
     } catch (error) {
       return res.status(400).json({
@@ -166,7 +166,7 @@ module.exports.serviceController = {
           },
         },
         { new: true }
-      )
+      ).populate("saveCourses");
       return res.json(us);
     } catch (error) {
       return res.status(400).json({
