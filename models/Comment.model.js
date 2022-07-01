@@ -6,6 +6,7 @@ const commentSchema = mongoose.Schema({
     type: mongoose.SchemaTypes.ObjectId,
     ref: "Service",
   },
+  grade: Number,
   userId: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
