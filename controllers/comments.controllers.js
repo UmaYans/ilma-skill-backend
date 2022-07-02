@@ -31,7 +31,7 @@ module.exports.CommentController = {
 
   deleteComments: async (req, res) => {
     try {
-      const comment = await Comment.find(req.params.id);
+      const comment = await Comment.findById(req.params.id);
 
       if (comment.userId.toString() === req.user.id) {
         await comment.remove();

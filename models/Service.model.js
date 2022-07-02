@@ -8,15 +8,11 @@ const serviceSchema = mongoose.Schema({
   price: Number,
   oldPrice: Number,
   content: Number,
-<<<<<<< HEAD
   format: [String],
-=======
-  format: String,
   teacher: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
   },
->>>>>>> 2eb9572b5f0d6505c580677fa2d4e4edff2d8161
   rating: Number,
   time: {
     start: Number,
