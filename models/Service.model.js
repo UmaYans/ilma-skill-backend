@@ -9,7 +9,6 @@ const serviceSchema = mongoose.Schema({
   oldPrice: Number,
   content: Number,
   format: [String],
-
   teacher: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "User",
