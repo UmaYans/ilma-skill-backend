@@ -20,6 +20,7 @@ module.exports.CommentController = {
         userId: req.user.id,
         serviceId: req.params.id,
         text: req.body.text,
+        grade: req.body.grade,
       });
       return res.json(postCom);
     } catch (error) {

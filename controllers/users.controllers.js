@@ -74,7 +74,7 @@ module.exports.usersController = {
 
   getUserById: async (req, res) => {
     try {
-      const user = await User.findById(req.user.id);
+      const user = await User.findById(req.user.id).populate("saveCourses");
       return res.json(user);
     } catch (error) {
       return res

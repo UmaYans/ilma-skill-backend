@@ -41,7 +41,7 @@ module.exports.serviceController = {
 
   getAllServices: async (req, res) => {
     try {
-      const AllService = await Service.find({}).populate("catId teacher")
+      const AllService = await Service.find({}).populate("catId teacher");
       return res.json(AllService);
     } catch (error) {
       return res.status(400).json({
@@ -92,9 +92,9 @@ module.exports.serviceController = {
 
   getServiceByFormat: async (req, res) => {
     try {
-      const servByTag = await Service.find({ format: req.body.tag }).populate(
-        "teacher catId"
-      );
+      const servByTag = await Service.find({
+        format: req.body.format,
+      }).populate("teacher catId");
       return res.json(servByTag);
     } catch (error) {
       return res.status(400).json({
@@ -110,19 +110,67 @@ module.exports.serviceController = {
       const cash = user.money - couse.price;
 
       if (user.money >= couse.price) {
-        await User.findByIdAndUpdate(user, {
-          $push: {
-            myCourses: couse,
+        const us = await User.findByIdAndUpdate(
+          user,
+          {
+            $addToSet: {
+              myCourses: req.params.id,
+            },
+            money: cash,
           },
-          money: cash,
-        }).populate("teacher catId");
-        return res.json("Курс добавлен");
+          { new: true }
+        ).populate("myCourses");
+        return res.json(us);
       } else {
-        return res.json("Недостаточно средств. Пополните баланс.");
+        return res.json({ error: "Недостаточно средств. Пополните баланс." });
       }
     } catch (error) {
       return res.status(400).json({
         error: "Ошибка при записи на курс: " + error.message,
+      });
+    }
+  },
+
+  saveCorses: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+
+      const us = await User.findByIdAndUpdate(
+        user,
+        {
+          $addToSet: {
+            saveCourses: req.params.id,
+          },
+        },
+        { new: true }
+      ).populate("saveCourses");
+      return res.json(us);
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при сохранении курса: " + error.message,
+      });
+    }
+  },
+
+  deleteSaveCourse: async (req, res) => {
+    try {
+      const user = await User.findById(req.user.id);
+      const couse = await Service.findById(req.params.id);
+      console.log(couse);
+
+      const us = await User.findByIdAndUpdate(
+        user,
+        {
+          $pull: {
+            saveCourses: req.params.id,
+          },
+        },
+        { new: true }
+      ).populate("saveCourses");
+      return res.json(us);
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при удалении курсa: " + error.message,
       });
     }
   },
