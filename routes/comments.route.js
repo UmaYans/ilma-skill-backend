@@ -5,6 +5,7 @@ const router = Router();
 
 router.post("/comment/:id",authMiddlewares, CommentController.postComments);
 router.get("/servCom/:servId", CommentController.getComByService);
+router.get("/userCom", authMiddlewares, CommentController.getComUserId)
 router.delete("/comment/:id",authMiddlewares, CommentController.deleteComments);
 
 

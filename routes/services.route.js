@@ -24,6 +24,7 @@ router.post("/service/entry/course/:id/wou", authMiddlewares, serviceController.
 
 router.patch("/saveCourses/:id", authMiddlewares, serviceController.saveCorses)
 router.patch("/deleteCourses/:id", authMiddlewares, serviceController.deleteSaveCourse)
+router.get("/teacherService", authMiddlewares, serviceController.getServiceTeacher)
 
 
 module.exports = router;
