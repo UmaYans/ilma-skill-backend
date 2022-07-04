@@ -102,4 +102,23 @@ module.exports.usersController = {
       return res.json({ error: error.message });
     }
   },
+  addMoney: async (req, res) => {
+    try {
+      const userById = await User.findById(req.user.id);
+      userById.money += req.body.money;
+
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          money: userById.money,
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
+    } catch (err) {
+      res.json({ err: "Не удалось пополнить счет, попробуйте еще раз" });
+    }
+  },
 };

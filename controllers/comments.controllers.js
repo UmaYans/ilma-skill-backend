@@ -22,7 +22,8 @@ module.exports.CommentController = {
       return res.json(getCom);
     } catch (error) {
       return res.status(400).json({
-        error: "Ошибка при выводе комментарий пользователя: " + error.toString(),
+        error:
+          "Ошибка при выводе комментарий пользователя: " + error.toString(),
       });
     }
   },
@@ -35,7 +36,10 @@ module.exports.CommentController = {
         text: req.body.text,
         grade: req.body.grade,
       });
-      return res.json(postCom);
+
+      const comm = await Comment.findById(postCom._id).populate("userId");
+
+      return res.json(comm);
     } catch (error) {
       return res.status(400).json({
         error: "Ошибка при добавлении комментария: " + error.toString(),
