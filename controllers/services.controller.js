@@ -174,4 +174,17 @@ module.exports.serviceController = {
       });
     }
   },
+
+  getServiceTeacher: async (req, res) => {
+    try {
+      const service = await Service.find({ teacher: req.user.id }).populate(
+        "teacher catId"
+      );
+      return res.json(service);
+    } catch (error) {
+      return res.status(400).json({
+        error: "Ошибка при выводе курсов преподователю: " + error.message,
+      });
+    }
+  },
 };
