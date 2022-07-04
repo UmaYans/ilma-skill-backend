@@ -22,7 +22,8 @@ module.exports.CommentController = {
       return res.json(getCom);
     } catch (error) {
       return res.status(400).json({
-        error: "Ошибка при выводе комментарий пользователя: " + error.toString(),
+        error:
+          "Ошибка при выводе комментарий пользователя: " + error.toString(),
       });
     }
   },
