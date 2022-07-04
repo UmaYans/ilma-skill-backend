@@ -14,7 +14,7 @@ const serviceSchema = mongoose.Schema({
     ref: "User",
   },
   rating: Number,
-  time: {
+  time: { 
     start: Number,
     end: Number,
   },

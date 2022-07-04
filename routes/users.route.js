@@ -18,6 +18,7 @@ router.patch(
   fileMiddleware.single("avatar"),
   usersController.pathAvatar
 );
+router.patch("/addMoney", authMiddlewares, usersController.addMoney);
 // router.post("/users", usersController.registerUser);
 // router.post("/login", usersController.login);
 // router.get("/user", authMiddlewares, usersController.getUserById);
