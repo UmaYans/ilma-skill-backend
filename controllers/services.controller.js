@@ -166,7 +166,7 @@ module.exports.serviceController = {
           },
         },
         { new: true }
-      ).populate("saveCourses");
+      ).populate("saveCourses")
       return res.json(us);
     } catch (error) {
       return res.status(400).json({
