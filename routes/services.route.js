@@ -1,10 +1,11 @@
 const { Router } = require("express");
 const { serviceController } = require("../controllers/services.controller");
 const authMiddlewares = require("../middlewares/auth.middlewares");
+const fileMiddleware = require("../middlewares/file.middlewares");
 
 const router = Router();
 
-router.post("/service", authMiddlewares, serviceController.addService);
+router.post("/service",fileMiddleware.single("image"), authMiddlewares, serviceController.addService);
 
 router.get("/service", serviceController.getAllServices);
 
@@ -40,5 +41,6 @@ router.get(
   authMiddlewares,
   serviceController.getServiceTeacher
 );
+
 
 module.exports = router;
