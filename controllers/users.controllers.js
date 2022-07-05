@@ -103,7 +103,9 @@ module.exports.usersController = {
   },
   getUserById: async (req, res) => {
     try {
-      const user = await User.findById(req.user.id).populate("saveCourses");
+      const user = await User.findById(req.user.id).populate(
+        "saveCourses myCourses"
+      );
       return res.json(user);
     } catch (error) {
       return res
@@ -114,7 +116,7 @@ module.exports.usersController = {
 
   getUsers: async (req, res) => {
     try {
-      const users = await User.find();
+      const users = await User.find().populate("myCourses saveCourses");
       return res.json(users);
     } catch (error) {
       return res.json(error);
@@ -129,6 +131,25 @@ module.exports.usersController = {
       return res.json(user);
     } catch (error) {
       return res.json({ error: error.message });
+    }
+  },
+  addMoney: async (req, res) => {
+    try {
+      const userById = await User.findById(req.user.id);
+      userById.money += req.body.money;
+
+      const user = await User.findByIdAndUpdate(
+        req.user.id,
+        {
+          money: userById.money,
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
+    } catch (err) {
+      res.json({ err: "Не удалось пополнить счет, попробуйте еще раз" });
     }
   },
 };

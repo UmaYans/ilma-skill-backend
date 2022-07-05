@@ -8,7 +8,7 @@ module.exports.serviceController = {
       name,
       description,
       tags,
-      photo,
+      image,
       price,
       teacher,
       oldPrice,
@@ -18,11 +18,13 @@ module.exports.serviceController = {
       catId,
     } = req.body;
     try {
+      const { filename } = req.file
+
       const course = await Service.create({
         name,
         description,
         tags,
-        photo,
+        image: filename,
         price,
         teacher: req.user.id,
         oldPrice,
@@ -166,7 +168,7 @@ module.exports.serviceController = {
           },
         },
         { new: true }
-      ).populate("saveCourses");
+      ).populate("saveCourses")
       return res.json(us);
     } catch (error) {
       return res.status(400).json({
