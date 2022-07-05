@@ -1,13 +1,26 @@
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const User = require("../models/User.model");
-require("dotenv").config();
+// здесь он не нужон require("dotenv").config() 
 
 module.exports.usersController = {
   registerUser: async (req, res) => {
     try {
-      const { firstName, lastName, login, age, password, phone, eMail, role } =
+      const { firstName, lastName, login, age, password, phone, email, role } =
         req.body;
+
+      if (!firstName || !lastName || !email || !age || !password ) {
+        res.status(400);
+        throw new Error("Пожалуйста заполните все поля!");
+      }
+
+      const userExists = await User.findOne({ email });
+
+      if (userExists) {
+        res.status(400);
+        throw new Error("Пользователь с такой почтой уже есть.");
+      }
+
       const hash = await bcrypt.hash(
         password,
         Number(process.env.BCRYPT_ROUNDS)
@@ -24,21 +37,21 @@ module.exports.usersController = {
         age,
         password: hash,
         phone,
-        eMail,
+        email,
         role,
       });
 
       return await res.json(user);
     } catch (error) {
       return res.status(401).json({
-        error: "Логин занят",
+        error: error.message,
       });
     }
   },
 
   login: async (req, res) => {
     try {
-      const { login, password, eMail } = req.body;
+      const { login, password } = req.body;
 
       const candidate = await User.findOne({ login });
 
@@ -58,12 +71,14 @@ module.exports.usersController = {
         lastName: candidate.lastName,
         login: candidate.login,
         telephone: candidate.telephone,
-        eMail: candidate.eMail,
+        email: candidate.email,
+        isAdmin: candidate.isAdmin,
       };
 
       const token = await jwt.sign(payload, process.env.SECRET_JWT_KEY, {
         expiresIn: "24h",
       });
+
       return res.json({ token });
     } catch (error) {
       return res
@@ -72,6 +87,20 @@ module.exports.usersController = {
     }
   },
 
+  userByNameOrEmail: async (req, res) => {
+    const keyword = req.query.search
+      ? {
+          $or: [
+            { firstName: { $regex: req.query.search, $options: "i" } },
+            { lastName: { $regex: req.query.search, $options: "i" } },
+            { email: { $regex: req.query.search, $options: "i" } },
+          ],
+        }
+      : {};
+
+    const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+    return res.send(users);
+  },
   getUserById: async (req, res) => {
     try {
       const user = await User.findById(req.user.id).populate(

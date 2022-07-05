@@ -7,6 +7,8 @@ const router = Router();
 router.post("/users", usersController.registerUser);
 router.post("/login", usersController.login);
 router.get("/user", authMiddlewares, usersController.getUserById);
+router.get("/usersSearch", authMiddlewares, usersController.userByNameOrEmail);
+
 router.get("/allUsers", usersController.getUsers);
 router.patch(
   "/avatar",
