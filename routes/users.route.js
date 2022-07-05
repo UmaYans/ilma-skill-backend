@@ -5,12 +5,9 @@ const fileMiddleware = require("../middlewares/file.middlewares");
 const router = Router();
 
 router.post("/users", usersController.registerUser);
-router.post(
-  "/login",
-
-  usersController.login
-);
+router.post("/login", usersController.login);
 router.get("/user", authMiddlewares, usersController.getUserById);
+router.get("/usersSearch", authMiddlewares, usersController.userByNameOrEmail);
 router.get("/users", usersController.getUsers);
 router.patch(
   "/avatar",

@@ -4,11 +4,12 @@ const userSchema = mongoose.Schema({
   firstName: String,
   lastName: String,
   age: Number,
-  email: String,
   phone: String,
   photo: String,
   rating: Number,
   password: String,
+  role: String,
+  email: { type: "String", unique: true, required: true },
   avatar: {
     type: String,
     default: "public\\user.png",
@@ -33,8 +34,13 @@ const userSchema = mongoose.Schema({
     type: String,
     unique: true,
   },
-  role: String,
-});
+  isAdmin: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { timestaps: true }
+);
 
 const User = mongoose.model("User", userSchema);
 
