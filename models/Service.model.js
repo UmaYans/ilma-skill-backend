@@ -4,7 +4,10 @@ const serviceSchema = mongoose.Schema({
   name: String,
   description: String,
   tags: [String],
-  image: String,
+  image: {
+    type: String,
+    default: "public\\defoltPhoto.jpg",
+  },
   price: Number,
   oldPrice: Number,
   content: Number,

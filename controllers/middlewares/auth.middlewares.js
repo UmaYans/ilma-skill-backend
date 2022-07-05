@@ -21,7 +21,7 @@ module.exports = async (req, res, next) => {
     req.user = await jwt.verify(token, process.env.SECRET_JWT_KEY);
 
     next();
-    } catch (error) {
+  } catch (error) {
     return res.status(401).json({
       error: "Ошибка авторизации:" + error.toString(),
     });
