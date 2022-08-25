@@ -18,7 +18,7 @@ module.exports.serviceController = {
       catId,
     } = req.body;
     try {
-      const { filename } = req.file
+      const { filename } = req.file;
 
       const course = await Service.create({
         name,
@@ -57,6 +57,7 @@ module.exports.serviceController = {
       const servById = await Service.findById(req.params.id).populate(
         "teacher catId"
       );
+
       return res.json(servById);
     } catch (error) {
       return res.status(400).json({
@@ -168,7 +169,7 @@ module.exports.serviceController = {
           },
         },
         { new: true }
-      ).populate("saveCourses")
+      ).populate("saveCourses");
       return res.json(us);
     } catch (error) {
       return res.status(400).json({
